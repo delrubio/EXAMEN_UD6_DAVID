@@ -9,7 +9,6 @@ public class AppPizzaExpress {
 
         System.out.println("Hola, como te llamas?");
         Cliente cliente1 = new Cliente(teclado.next());
-        Pedido pedido = new Pedido(cliente1);
-
+        Empleado empleado1 = new Empleado("Alejandro");
     }
 }

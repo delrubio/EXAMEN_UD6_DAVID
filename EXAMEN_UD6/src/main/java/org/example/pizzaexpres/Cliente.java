@@ -17,13 +17,15 @@ public class Cliente {
 
     public Cliente(String nombre) {
         descuento = DESCUENTODEFAULT;
+        pedido = new Pedido(this);
         pedir();
     }
 
     public void pedir() {
         mostrarCarta();
         System.out.println("Dime que te apetece: ");
-
+        pedido.agregarPizzas(teclado.next().toUpperCase());
+        pedido.continuarPedido();
     }
 
     public void mostrarCarta() {
@@ -36,7 +38,7 @@ public class Cliente {
     }
 
     public void recoger(){
-        System.out.println("Ya era hora. Ha comerme " + pedido.getListaPizzas());
+        System.out.println("Ya era hora. Ha comermer " + pedido.getListaPizzas());
     }
 
     public void pagar(){

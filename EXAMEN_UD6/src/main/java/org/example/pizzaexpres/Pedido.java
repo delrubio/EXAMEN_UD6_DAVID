@@ -14,14 +14,17 @@ public class Pedido {
     private ArrayList<CartaPizzas> listaPizzas;
     private Estado estadoPedido;
     private double totalPedido;
+    private Empleado empleado;
 
     public Pedido(Cliente cliente) {
         estadoPedido = Estado.CREANDO;
+        listaPizzas = new ArrayList<>();
+        this.cliente=cliente;
     }
 
     public void aplicarDescuento() {
         for (CartaPizzas pizza : listaPizzas) {
-            totalPedido = pizza.getPrecio() * (1 * cliente.getDescuento());
+            totalPedido = (pizza.getPrecio() * (cliente.getDescuento()))/100;
         }
     }
 
@@ -29,6 +32,7 @@ public class Pedido {
         System.out.println("Este es el estado del pedido: ");
         for (CartaPizzas carta : listaPizzas) {
             System.out.println(carta);
+            totalPedido+=carta.getPrecio();
         }
         System.out.println("Total: " + totalPedido + "€");
         System.out.println("---------------------------------");
@@ -39,6 +43,7 @@ public class Pedido {
                 break;
             case "N":
                 estadoPedido = Estado.RECIBIDO;
+                mostrarEstado();
                 cliente.pagar();
             default:
                 System.out.println("ERROR. Mala elección");
@@ -48,29 +53,31 @@ public class Pedido {
 
     public void mostrarEstado() {
 
-        int importe = 0;
-        for (CartaPizzas carta : listaPizzas) {
-            importe += carta.getPrecio();
-        }
-
         System.out.println("Pedido: " + estadoPedido);
-        System.out.println("Importe: " + importe);
-        System.out.println("Descuento aplicado: " + cliente.getDescuento());
-        System.out.println("Total a pagar: " + totalPedido);
+        System.out.println("Importe: " + totalPedido + "€");
+        System.out.println("Descuento aplicado: " + cliente.getDescuento() + "%");
+        aplicarDescuento();
+        System.out.println("Total a pagar: " + getTotalPedido());
         System.out.println("Pasa por caja para pagar cuando el pedido esté listo " + cliente.getNombre());
     }
 
     public void avanzarEstado() {
-        Estado estado = Estado.MONTANDO_PIZZA;
+        estadoPedido = Estado.MONTANDO_PIZZA;
 
         for (int i = 0; i < 3; i++) {
-            System.out.println(estado);
-            estado = estado.siguiente(estado);
+            System.out.println(estadoPedido);
+            estadoPedido = estadoPedido.siguiente(estadoPedido);
+            empleado.entregarPedido(this);
         }
+    }
 
-        if (estado.equals(Estado.LISTO)) {
-            cliente.recoger();
+    public void agregarPizzas(String pizza){
+        for (CartaPizzas carta: CartaPizzas.values()){
+            if (carta.name().equals(pizza)){
+                this.listaPizzas.add(carta);
+            }else {
+                System.out.println("No existe.");
+            }
         }
-
     }
 }

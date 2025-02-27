@@ -11,10 +11,13 @@ public class Empleado {
     private String id_empleado;
     private String nombre;
     private Pedido pedido;
+    private Estado estado;
+    private Cliente cliente;
 
     public Empleado(String nombre){
         this.nombre=nombre;
         id_empleado=crearId();
+        cliente=pedido.getCliente();
     }
 
     public String crearId(){
@@ -29,6 +32,7 @@ public class Empleado {
     public void entregarPedido(Pedido pedido){
         if (pedido.getEstadoPedido().equals(Estado.LISTO)){
             System.out.println("Pedido entregado ha " + pedido.getCliente());
+            cliente.recoger();
         }else {
             siguienteEstado(pedido);
             System.out.println("El pedido aún no está listo.");
