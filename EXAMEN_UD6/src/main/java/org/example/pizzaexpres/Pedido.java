@@ -24,7 +24,7 @@ public class Pedido {
 
     public void aplicarDescuento() {
         for (CartaPizzas pizza : listaPizzas) {
-            totalPedido = (pizza.getPrecio() * (cliente.getDescuento()))/100;
+            totalPedido = pizza.getPrecio()-((pizza.getPrecio() * (cliente.getDescuento()))/100);
         }
     }
 
